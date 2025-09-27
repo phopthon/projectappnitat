@@ -1,0 +1,77 @@
+import '../models/art.dart';
+
+final List<Art> artList = [
+  Art(
+    id: 1,
+    name: "Mona Lisa",
+    artist: "Leonardo da Vinci",
+    price: "2,015 Baht",
+    imagePath: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/330px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg",
+    description: "MG grade, assembled model",
+  ),
+  Art(
+    id: 2,
+    name: "Portrait of Lorenzo de’ Medici",
+    artist: "Michelangelo Buonarroti",
+    price: "2,500 Baht",
+    imagePath: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Portrait_of_Lorenzo_di_Medici.jpg/960px-Portrait_of_Lorenzo_di_Medici.jpg",
+    description: "Perfect grade, painted",
+  ),
+  Art(
+    id: 3,
+    name: "Portrait of Baldassare Castiglione",
+    artist: "Raphael Sanzio",
+    price: "1,800 Baht",
+    imagePath: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Baldassare_Castiglione%2C_by_Raffaello_Sanzio%2C_from_C2RMF_retouched.jpg/965px-Baldassare_Castiglione%2C_by_Raffaello_Sanzio%2C_from_C2RMF_retouched.jpg",
+    description: "High detail model kit",
+  ),
+  Art(
+    id: 4,
+    name: "The Last Supper",
+    artist: "Leonardo da Vinci",
+    price: "1,800 Baht",
+    imagePath: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/The-Last-Supper-Restored-Da-Vinci_32x16.jpg/2560px-The-Last-Supper-Restored-Da-Vinci_32x16.jpg",
+    description: "High detail model kit",
+  ),
+  Art(
+    id: 5,
+    name: "The Creation of Adam",
+    artist: "Michelangelo Buonarroti",
+    price: "1,800 Baht",
+    imagePath: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg/1200px-Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg",
+    description: "High detail model kit",
+  ),
+  Art(
+    id: 6,
+    name: "The Sistine Madonna",
+    artist: "Raphael Sanzio",
+    price: "1,800 Baht",
+    imagePath: "https://upload.wikimedia.org/wikipedia/commons/7/7a/RAFAEL_-_Madonna_Sixtina_%28Gem%C3%A4ldegalerie_Alter_Meister%2C_Dresden%2C_1513-14._%C3%93leo_sobre_lienzo%2C_265_x_196_cm%29.jpg",
+    description: "High detail model kit",
+  ),
+  Art(
+    id: 7,
+    name: "The Battle of Anghiari",
+    artist: "Leonardo da Vinci",
+    price: "1,800 Baht",
+    imagePath: "https://masterapollon.com/wp-content/uploads/2025/03/la-bataille-danghiari-leonard-de-vinci-reproductions-tableaux-a-peinture-lhuile-813-1024x715.jpg",
+    description: "High detail model kit",
+  ),
+  Art(
+    id: 8,
+    name: "The Battle of Cascina",
+    artist: "Michelangelo Buonarroti",
+    price: "1,800 Baht",
+    imagePath: "https://upload.wikimedia.org/wikipedia/commons/d/d3/Battagliadicascina.jpg",
+    description: "High detail model kit",
+  ),
+  Art(
+    id: 9,
+    name: "The School of Athens",
+    artist: "Raphael Sanzio",
+    price: "1,800 Baht",
+    imagePath: "https://upload.wikimedia.org/wikipedia/commons/4/49/%22The_School_of_Athens%22_by_Raffaello_Sanzio_da_Urbino.jpg",
+    description: "High detail model kit",
+  ),
+];
+
