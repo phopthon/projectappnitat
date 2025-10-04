@@ -47,8 +47,8 @@ class _NavigationBarAppState extends State<NavigationBarApp> {
       body:
           _pages[_selectedIndex], // แสดงหน้าที่เลือกอยู่ปัจจุบัน (จาก list _pages)
       bottomNavigationBar: NavigationBar(
-        backgroundColor: const Color.fromARGB(255, 15, 13, 13),
-        indicatorColor: const Color.fromARGB(60, 129, 129, 129),
+        backgroundColor: Colors.brown,
+        indicatorColor: const Color.fromARGB(255, 85, 85, 85),
         selectedIndex: _selectedIndex, // ตำแหน่งปุ่มที่เลือกอยู่ตอนนี้
         onDestinationSelected: (int index) {
           // เมื่อกดปุ่มเมนู → เปลี่ยน index
@@ -58,15 +58,15 @@ class _NavigationBarAppState extends State<NavigationBarApp> {
         },
         destinations: const [
           NavigationDestination(
-            icon: Icon(Icons.home, color: Colors.white),
+            icon: Icon(Icons.home, color:const Color(0xFFF9F6F1)),
             label: "",
           ),
           NavigationDestination(
-            icon: Icon(Icons.search, color: Colors.white),
+            icon: Icon(Icons.search, color: const Color(0xFFF9F6F1)),
             label: "",
           ),
           NavigationDestination(
-            icon: Icon(Icons.favorite, color: Colors.white),
+            icon: Icon(Icons.favorite, color: const Color(0xFFF9F6F1)),
             label: "",
           ),
         ],
@@ -87,7 +87,7 @@ class HomePage extends StatelessWidget {
         // วนลูป art แต่ละชิ้นใน arts แล้วสร้าง widget
         children: arts.map((art) {
           return Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(8),
             child: Stack(
               // ใช้ซ้อน widget (รูป + ปุ่มหัวใจ)
               children: [
@@ -106,13 +106,6 @@ class HomePage extends StatelessWidget {
                   child: Column(
                     children: [
                       Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.white,
-                            width: 3,
-                          ), // กรอบสีขาว
-                          borderRadius: BorderRadius.circular(12), // มุมโค้ง
-                        ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: Image.network(
@@ -129,7 +122,7 @@ class HomePage extends StatelessWidget {
                         child: Text(
                           art.name,
                           style: const TextStyle(
-                            color: Colors.white,
+                            color: Color.fromARGB(255, 0, 0, 0),
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),
@@ -183,16 +176,16 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: const Color(0xFFF9F6F1),
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: const Color(0xFFF9F6F1),
         elevation: 0,
         title: const Text(
           "Art Gallery",
           style: const TextStyle(
             fontSize: 26,
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color:  Colors.brown
           ),
         ),
         centerTitle: false,
@@ -222,13 +215,13 @@ class HomePage extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: Color.fromARGB(255, 0, 0, 0),
               ),
             ),
             const SizedBox(height: 2),
             const Text(
               "Explore unique collection of artwork",
-              style: const TextStyle(fontSize: 15, color: Colors.white),
+              style: const TextStyle(fontSize: 15, color: Color.fromARGB(255, 0, 0, 0)),
             ),
             const SizedBox(height: 25),
             const Text(
@@ -236,14 +229,14 @@ class HomePage extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: Color.fromARGB(255, 0, 0, 0),
               ),
             ),
             const SizedBox(height: 15),
 
             const Text(
               "ภาพเสมือน",
-              style: const TextStyle(fontSize: 15, color: Colors.white),
+              style: const TextStyle(fontSize: 15, color: Color.fromARGB(255, 0, 0, 0)),
             ),
 
             const SizedBox(height: 5),
@@ -254,7 +247,7 @@ class HomePage extends StatelessWidget {
 
             const Text(
               "Popular Artist",
-              style: const TextStyle(fontSize: 15, color: Colors.white),
+              style: const TextStyle(fontSize: 15, color: Color.fromARGB(255, 0, 0, 0)),
             ),
 
             const SizedBox(height: 14),
@@ -300,7 +293,7 @@ class HomePage extends StatelessWidget {
 
             const Text(
               "ศาสนา",
-              style: TextStyle(fontSize: 15, color: Colors.white),
+              style: TextStyle(fontSize: 15, color: Color.fromARGB(255, 0, 0, 0)),
             ),
 
             const SizedBox(height: 5),
@@ -311,7 +304,7 @@ class HomePage extends StatelessWidget {
 
             const Text(
               "ฉากประวัติศาสตร์/เทพนิยาย",
-              style: const TextStyle(fontSize: 15, color: Colors.white),
+              style: const TextStyle(fontSize: 15, color: Color.fromARGB(255, 0, 0, 0)),
             ),
 
             const SizedBox(height: 5),
@@ -360,7 +353,7 @@ Widget _artistCircle(String imageUrl, String name) {
           width: 70,
           child: Text(
             name,
-            style: const TextStyle(color: Colors.white, fontSize: 12),
+            style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 12),
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
           ),
@@ -384,7 +377,7 @@ class SearchPage extends StatelessWidget {
           style: const TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: Color.fromARGB(255, 0, 0, 0),
           ),
         ),
         const SizedBox(height: 7),
@@ -393,7 +386,7 @@ class SearchPage extends StatelessWidget {
           child: Row(
             children: arts.map((art) {
               return Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(8),
                 child: Stack(
                   children: [
                     GestureDetector(
@@ -408,15 +401,6 @@ class SearchPage extends StatelessWidget {
                       child: Column(
                         children: [
                           Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.white,
-                                width: 3,
-                              ), // กรอบสีขาว
-                              borderRadius: BorderRadius.circular(
-                                12,
-                              ), // มุมโค้ง
-                            ),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(12),
                               child: Image.network(
@@ -433,7 +417,7 @@ class SearchPage extends StatelessWidget {
                             child: Text(
                               art.name,
                               style: const TextStyle(
-                                color: Colors.white,
+                                color: Color.fromARGB(255, 0, 0, 0),
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -485,7 +469,7 @@ class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: const Color(0xFFF9F6F1),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(25.0),
@@ -495,7 +479,7 @@ class SearchPage extends StatelessWidget {
               const Text(
                 "Find your Art",
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.brown,
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
                 ),
@@ -503,7 +487,7 @@ class SearchPage extends StatelessWidget {
               const SizedBox(height: 20),
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: const Color.fromARGB(255, 201, 198, 198),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 padding: const EdgeInsets.all(12),
@@ -511,7 +495,11 @@ class SearchPage extends StatelessWidget {
                   children: [
                     Icon(Icons.search),
                     SizedBox(width: 5),
-                    Text("search"),
+                    Text("search",
+                    style: TextStyle(
+                      color: Colors.black
+                    ),
+                    ),
                   ],
                 ),
               ),
@@ -539,72 +527,120 @@ class FavoritesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: const Color(0xFFF9F6F1), // พื้นหลังโทนสีอ่อนแนว Art Gallery
       appBar: AppBar(
-        title: const Text("Favorites", style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.black,
+        title: const Text(
+          "Favorites",
+          style: TextStyle(
+            color: Colors.brown,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: const Color(0xFFF9F6F1),
+        elevation: 0, // เอาเงาออก ให้เรียบหรู
+        centerTitle: true,
       ),
-      body: ValueListenableBuilder<List<Art>>(  // ฟังค่าจาก favoriteNotifier → รีเฟรช UI อัตโนมัติเมื่อเปลี่ยนค่า
+      body: ValueListenableBuilder<List<Art>>(  
+        // ฟังค่าจาก favoriteNotifier → รีเฟรช UI อัตโนมัติเมื่อเปลี่ยนค่า
         valueListenable: favoriteNotifier,
         builder: (context, favs, _) {
-          if (favs.isEmpty) {// ถ้าไม่มี favorite เลย → แสดงข้อความ 
+          if (favs.isEmpty) {
+            // ถ้าไม่มี favorite เลย → แสดงข้อความ 
             return const Center(
               child: Text(
                 "No favorites yet",
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 16,
+                  fontStyle: FontStyle.italic,
+                ),
               ),
             );
           }
 
-          return GridView.builder(// ถ้ามี favorite → แสดงเป็น GridView
+          return GridView.builder(
+            // ถ้ามี favorite → แสดงเป็น GridView
             padding: const EdgeInsets.all(16),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,       // 2 คอลัมน์
-              mainAxisSpacing: 16,     // ระยะแนวตั้งระหว่าง item
-              crossAxisSpacing: 16,    // ระยะแนวนอนระหว่าง item
-              childAspectRatio: 160 / 120, // อัตราส่วนของรูป
+              mainAxisSpacing: 20,     // ระยะแนวตั้งระหว่าง item
+              crossAxisSpacing: 20,    // ระยะแนวนอนระหว่าง item
+              childAspectRatio: 3 / 4, // สัดส่วนแนวตั้งมากขึ้นให้เหมือนกรอบภาพ
             ),
             itemCount: favs.length,
             itemBuilder: (context, index) {
               final art = favs[index];
-              return Stack(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DetailPage(artId: art.id),
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DetailPage(artId: art.id),
+                    ),
+                  );
+                },
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  elevation: 4, // เงาเบาๆ ให้ดูเหมือนกรอบภาพ
+                  clipBehavior: Clip.antiAlias,
+                  child: Stack(
+                    children: [
+                      // ---------------- รูปผลงาน ----------------
+                      Positioned.fill(
+                        child: Image.network(
+                          art.imagePath,
+                          fit: BoxFit.cover,
                         ),
-                      );
-                    },
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.network(
-                        art.imagePath,
-                        width: double.infinity,
-                        height: double.infinity,
-                        fit: BoxFit.cover,
                       ),
-                    ),
-                  ),
-                  Positioned(// ปุ่มหัวใจลบออกจาก favorite
-                    top: 8,
-                    right: 8,
-                    child: GestureDetector(
-                      onTap: () {
-                        favoriteNotifier.value = favs
-                            .where((a) => a != art)
-                            .toList();
-                      },
-                      child: const Icon(
-                        Icons.favorite,
-                        color: Colors.red,
-                        size: 28,
+
+                      // ---------------- ปุ่มหัวใจ ----------------
+                      Positioned(
+                        top: 8,
+                        right: 8,
+                        child: GestureDetector(
+                          onTap: () {
+                            favoriteNotifier.value =
+                                favs.where((a) => a != art).toList();
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.7), // พื้นหลังโปร่ง
+                              shape: BoxShape.circle,
+                            ),
+                            padding: const EdgeInsets.all(6),
+                            child: const Icon(
+                              Icons.favorite,
+                              color: Colors.red,
+                              size: 22,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+
+                      // ---------------- ชื่อผลงาน ----------------
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          color: Colors.black.withOpacity(0.5), // พื้นหลังดำโปร่ง
+                          child: Text(
+                            art.name,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               );
             },
           );
@@ -613,3 +649,4 @@ class FavoritesPage extends StatelessWidget {
     );
   }
 }
+

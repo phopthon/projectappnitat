@@ -12,8 +12,8 @@ class DetailPage extends StatelessWidget {
     final Art art = artList.firstWhere((element) => element.id == artId); // หา Art object ที่ตรงกับ artId จาก artList
 
     return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(title: Text(art.name)),
+      backgroundColor: const Color(0xFFF9F6F1),
+      appBar: AppBar(title: Text(art.name, style: TextStyle(color: Colors.brown))),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -39,7 +39,7 @@ class DetailPage extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: Color.fromARGB(255, 0, 0, 0),
               ),
             ),
             const SizedBox(height: 8),
@@ -47,7 +47,7 @@ class DetailPage extends StatelessWidget {
               art.artist,
               style: const TextStyle(
                 fontSize: 18,
-                color: Color.fromARGB(255, 255, 255, 255),
+                color: Color.fromARGB(255, 0, 0, 0),
               ),
             ),
             const SizedBox(height: 8),
@@ -56,13 +56,13 @@ class DetailPage extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: Color.fromARGB(255, 0, 0, 0),
               ),
             ),
             const SizedBox(height: 16),
             Text(
               art.description,
-              style: const TextStyle(fontSize: 16, color: Colors.white),
+              style: const TextStyle(fontSize: 16, color: Color.fromARGB(255, 0, 0, 0)),
             ),
           ],
         ),
