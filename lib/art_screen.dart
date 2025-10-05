@@ -3,7 +3,6 @@ import 'art_detail.dart';
 import 'package:project1/models/art.dart';
 import 'package:project1/data/art_data.dart';
 
-
 ValueNotifier<List<Art>> favoriteNotifier = ValueNotifier<List<Art>>(
   [],
 ); // ตัวแปรที่ใช้เก็บ "รายการงานศิลป์ที่ถูกกดชอบ (Favorite)"
@@ -48,7 +47,7 @@ class _NavigationBarAppState extends State<NavigationBarApp> {
           _pages[_selectedIndex], // แสดงหน้าที่เลือกอยู่ปัจจุบัน (จาก list _pages)
       bottomNavigationBar: NavigationBar(
         backgroundColor: Colors.brown,
-        indicatorColor: const Color.fromARGB(255, 85, 85, 85),
+        indicatorColor: const Color(0xFF8B5E3C),
         selectedIndex: _selectedIndex, // ตำแหน่งปุ่มที่เลือกอยู่ตอนนี้
         onDestinationSelected: (int index) {
           // เมื่อกดปุ่มเมนู → เปลี่ยน index
@@ -58,7 +57,7 @@ class _NavigationBarAppState extends State<NavigationBarApp> {
         },
         destinations: const [
           NavigationDestination(
-            icon: Icon(Icons.home, color:const Color(0xFFF9F6F1)),
+            icon: Icon(Icons.home, color: const Color(0xFFF9F6F1)),
             label: "",
           ),
           NavigationDestination(
@@ -79,93 +78,111 @@ class _NavigationBarAppState extends State<NavigationBarApp> {
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
-  // ฟังก์ชันสร้างแถวแสดงงานศิลปะ (เลื่อนในแนวนอน)
+  // ฟังก์ชันสร้าง "แถวผลงานศิลปะ" แบบเลื่อนแนวนอน
+  // ปรับให้เหมือนหน้า Favorite: มีกรอบ Card, เงา, ปุ่มหัวใจ, และชื่อทับพื้นหลังดำโปร่ง
   Widget _artRow(List<Art> arts, BuildContext context) {
     return SingleChildScrollView(
-      scrollDirection: Axis.horizontal, // เลื่อนแนวนอนได้
+      scrollDirection: Axis.horizontal, // ให้เลื่อนได้แนวนอน
       child: Row(
-        // วนลูป art แต่ละชิ้นใน arts แล้วสร้าง widget
         children: arts.map((art) {
           return Padding(
-            padding: const EdgeInsets.all(8),
-            child: Stack(
-              // ใช้ซ้อน widget (รูป + ปุ่มหัวใจ)
-              children: [
-                // คลิกได้ → ไปหน้า DetailPage
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailPage(
-                          artId: art.id,
-                        ), // ส่ง id งานศิลป์ไปหน้า Detail
+            padding: const EdgeInsets.all(8), // เว้นระยะระหว่างแต่ละภาพ
+            child: GestureDetector(
+              onTap: () {
+                // 👉 เมื่อกดภาพ → ไปหน้าแสดงรายละเอียด (DetailPage)
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailPage(artId: art.id),
+                  ),
+                );
+              },
+              child: Card(
+                // กรอบภาพแบบมุมโค้ง + เงา
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                elevation: 4, // เงาเบาๆ เหมือนกรอบรูป
+                clipBehavior: Clip.antiAlias, // ตัดขอบภาพให้อยู่ในมุมโค้ง
+                child: Stack(
+                  children: [
+                    // ---------- รูปผลงาน ----------
+                    Image.network(
+                      art.imagePath,
+                      width: 160,
+                      height: 160,
+                      fit: BoxFit.cover, // ครอบเต็มกรอบ
+                    ),
+
+                    // ---------- ปุ่มหัวใจ ----------
+                    Positioned(
+                      top: 8,
+                      right: 8,
+                      child: ValueListenableBuilder<List<Art>>(
+                        valueListenable:
+                            favoriteNotifier, // ฟังค่ารายการ favorite
+                        builder: (context, favs, _) {
+                          final isFavorite = favs.contains(
+                            art,
+                          ); // เช็คว่าถูกกดชอบหรือยัง
+                          return GestureDetector(
+                            onTap: () {
+                              // 👉 ถ้าถูกกดชอบแล้ว → เอาออก
+                              // 👉 ถ้ายัง → เพิ่มเข้า favorites
+                              if (isFavorite) {
+                                favoriteNotifier.value = favs
+                                    .where((a) => a != art)
+                                    .toList();
+                              } else {
+                                favoriteNotifier.value = [...favs, art];
+                              }
+                            },
+                            child: Container(
+                              // วงกลมพื้นหลังขาวโปร่งบางๆ รองหัวใจ
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.7),
+                                shape: BoxShape.circle,
+                              ),
+                              padding: const EdgeInsets.all(6),
+                              child: Icon(
+                                isFavorite
+                                    ? Icons
+                                          .favorite // หัวใจเต็ม
+                                    : Icons.favorite_border, // หัวใจขอบ
+                                color: Colors.red,
+                                size: 22,
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                    );
-                  },
-                  child: Column(
-                    children: [
-                      Container(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: Image.network(
-                            art.imagePath,
-                            width: 160,
-                            height: 160,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 5),
-                      SizedBox(
-                        width: 160,
+                    ),
+
+                    // ---------- ชื่อผลงาน ----------
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        padding: const EdgeInsets.all(6),
+                        color: Colors.black.withOpacity(
+                          0.5,
+                        ), // พื้นหลังดำโปร่งบางๆ
                         child: Text(
                           art.name,
                           style: const TextStyle(
-                            color: Color.fromARGB(255, 0, 0, 0),
-                            fontSize: 14,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
+                            fontSize: 13,
                           ),
-                          overflow: TextOverflow.ellipsis,
+                          overflow:
+                              TextOverflow.ellipsis, // ถ้าชื่อยาวเกิน → ...
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                Positioned(
-                  // ปุ่มหัวใจมุมขวาบน (กดชอบ/ยกเลิก)
-                  top: 8,
-                  right: 8,
-                  child: ValueListenableBuilder<List<Art>>(
-                    valueListenable: favoriteNotifier, // ตัวแปรเก็บงานที่กดชอบ
-                    builder: (context, favs, _) {
-                      final isFavorite = favs.contains(
-                        art,
-                      ); // เช็คว่า art นี้ถูกกดชอบหรือยัง
-                      return GestureDetector(
-                        onTap: () {
-                          if (isFavorite) {
-                            favoriteNotifier.value = favs
-                                .where((a) => a != art)
-                                .toList();
-                          } else {
-                            favoriteNotifier.value = [...favs, art];
-                          }
-                        },
-                        child: Icon(
-                          isFavorite
-                              ? Icons
-                                    .favorite // ถ้าถูกกดชอบ → หัวใจเต็ม
-                              : Icons
-                                    .favorite_border, // ถ้ายังไม่ถูกกดชอบ → หัวใจขอบ
-                          color: Colors.red,
-                          size: 28,
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
+              ),
             ),
           );
         }).toList(),
@@ -185,7 +202,7 @@ class HomePage extends StatelessWidget {
           style: const TextStyle(
             fontSize: 26,
             fontWeight: FontWeight.bold,
-            color:  Colors.brown
+            color: Colors.brown,
           ),
         ),
         centerTitle: false,
@@ -221,7 +238,10 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 2),
             const Text(
               "Explore unique collection of artwork",
-              style: const TextStyle(fontSize: 15, color: Color.fromARGB(255, 0, 0, 0)),
+              style: const TextStyle(
+                fontSize: 15,
+                color: Color.fromARGB(255, 0, 0, 0),
+              ),
             ),
             const SizedBox(height: 25),
             const Text(
@@ -236,7 +256,10 @@ class HomePage extends StatelessWidget {
 
             const Text(
               "ภาพเสมือน",
-              style: const TextStyle(fontSize: 15, color: Color.fromARGB(255, 0, 0, 0)),
+              style: const TextStyle(
+                fontSize: 15,
+                color: Color.fromARGB(255, 0, 0, 0),
+              ),
             ),
 
             const SizedBox(height: 5),
@@ -247,7 +270,10 @@ class HomePage extends StatelessWidget {
 
             const Text(
               "Popular Artist",
-              style: const TextStyle(fontSize: 15, color: Color.fromARGB(255, 0, 0, 0)),
+              style: const TextStyle(
+                fontSize: 15,
+                color: Color.fromARGB(255, 0, 0, 0),
+              ),
             ),
 
             const SizedBox(height: 14),
@@ -293,7 +319,10 @@ class HomePage extends StatelessWidget {
 
             const Text(
               "ศาสนา",
-              style: TextStyle(fontSize: 15, color: Color.fromARGB(255, 0, 0, 0)),
+              style: TextStyle(
+                fontSize: 15,
+                color: Color.fromARGB(255, 0, 0, 0),
+              ),
             ),
 
             const SizedBox(height: 5),
@@ -304,7 +333,10 @@ class HomePage extends StatelessWidget {
 
             const Text(
               "ฉากประวัติศาสตร์/เทพนิยาย",
-              style: const TextStyle(fontSize: 15, color: Color.fromARGB(255, 0, 0, 0)),
+              style: const TextStyle(
+                fontSize: 15,
+                color: Color.fromARGB(255, 0, 0, 0),
+              ),
             ),
 
             const SizedBox(height: 5),
@@ -353,7 +385,10 @@ Widget _artistCircle(String imageUrl, String name) {
           width: 70,
           child: Text(
             name,
-            style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 12),
+            style: const TextStyle(
+              color: Color.fromARGB(255, 0, 0, 0),
+              fontSize: 12,
+            ),
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
           ),
@@ -367,11 +402,13 @@ Widget _artistCircle(String imageUrl, String name) {
 class SearchPage extends StatelessWidget {
   const SearchPage({super.key});
 
-  // ฟังก์ชันสร้างแถวศิลปิน (ชื่อหมวด + ภาพผลงาน)
+  // ฟังก์ชันสร้าง "แถวผลงานของศิลปินแต่ละคน"
+  // ปรับให้เหมือนหน้า Favorite เช่นกัน
   Widget _artistRow(String title, List<Art> arts, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // ---------- หัวข้อชื่อศิลปิน ----------
         Text(
           title,
           style: const TextStyle(
@@ -381,82 +418,99 @@ class SearchPage extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 7),
+
+        // ---------- แถวภาพผลงาน ----------
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
             children: arts.map((art) {
               return Padding(
                 padding: const EdgeInsets.all(8),
-                child: Stack(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => DetailPage(artId: art.id),
+                child: GestureDetector(
+                  onTap: () {
+                    // 👉 คลิกที่ภาพ → เปิดหน้า DetailPage
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailPage(artId: art.id),
+                      ),
+                    );
+                  },
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    elevation: 4, // เงาเหมือนกรอบภาพ
+                    clipBehavior: Clip.antiAlias,
+                    child: Stack(
+                      children: [
+                        // ---------- รูปผลงาน ----------
+                        Image.network(
+                          art.imagePath,
+                          width: 160,
+                          height: 160,
+                          fit: BoxFit.cover,
+                        ),
+
+                        // ---------- ปุ่มหัวใจ ----------
+                        Positioned(
+                          top: 8,
+                          right: 8,
+                          child: ValueListenableBuilder<List<Art>>(
+                            valueListenable: favoriteNotifier,
+                            builder: (context, favs, _) {
+                              final isFavorite = favs.contains(art);
+                              return GestureDetector(
+                                onTap: () {
+                                  if (isFavorite) {
+                                    favoriteNotifier.value = favs
+                                        .where((a) => a != art)
+                                        .toList();
+                                  } else {
+                                    favoriteNotifier.value = [...favs, art];
+                                  }
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0.7),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  padding: const EdgeInsets.all(6),
+                                  child: Icon(
+                                    isFavorite
+                                        ? Icons.favorite
+                                        : Icons.favorite_border,
+                                    color: Colors.red,
+                                    size: 22,
+                                  ),
+                                ),
+                              );
+                            },
                           ),
-                        );
-                      },
-                      child: Column(
-                        children: [
-                          Container(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
-                              child: Image.network(
-                                art.imagePath,
-                                width: 160,
-                                height: 160,
-                                fit: BoxFit.cover, // ครอบรูปเต็มกรอบ
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 5),
-                          SizedBox(
-                            width: 160,
+                        ),
+
+                        // ---------- ชื่อผลงาน ----------
+                        Positioned(
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: Container(
+                            padding: const EdgeInsets.all(6),
+                            color: Colors.black.withOpacity(0.5),
                             child: Text(
                               art.name,
                               style: const TextStyle(
-                                color: Color.fromARGB(255, 0, 0, 0),
-                                fontSize: 14,
+                                color: Colors.white,
                                 fontWeight: FontWeight.bold,
+                                fontSize: 13,
                               ),
-                              overflow: TextOverflow
-                                  .ellipsis, // ถ้าชื่อยาวเกินตัดด้วย "..."
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    Positioned(
-                      top: 8,
-                      right: 8,
-                      child: ValueListenableBuilder<List<Art>>(
-                        valueListenable: favoriteNotifier,
-                        builder: (context, Art, _) {
-                          final isFavorite = Art.contains(art);
-                          return GestureDetector(
-                            onTap: () {
-                              if (isFavorite) {
-                                favoriteNotifier.value = Art.where(
-                                  (a) => a != art,
-                                ).toList();
-                              } else {
-                                favoriteNotifier.value = [...Art, art];
-                              }
-                            },
-                            child: Icon(
-                              isFavorite
-                                  ? Icons.favorite
-                                  : Icons.favorite_border,
-                              color: Colors.red,
-                              size: 28,
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               );
             }).toList(),
@@ -495,21 +549,21 @@ class SearchPage extends StatelessWidget {
                   children: [
                     Icon(Icons.search),
                     SizedBox(width: 5),
-                    Text("search",
-                    style: TextStyle(
-                      color: Colors.black
-                    ),
-                    ),
+                    Text("search", style: TextStyle(color: Colors.black)),
                   ],
                 ),
               ),
 
               const SizedBox(height: 25),
 
-               // แถวผลงานของศิลปินแต่ละคน
+              // แถวผลงานของศิลปินแต่ละคน
               _artistRow("ศิลปิน Leonardo da Vinci", leonardoArts, context),
               const SizedBox(height: 20),
-              _artistRow("ศิลปิน Michelangelo Buonarroti",michelangeloArts, context,),
+              _artistRow(
+                "ศิลปิน Michelangelo Buonarroti",
+                michelangeloArts,
+                context,
+              ),
               const SizedBox(height: 20),
               _artistRow("ศิลปิน Raphael Sanzio", raphaelArts, context),
             ],
@@ -527,25 +581,24 @@ class FavoritesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F6F1), // พื้นหลังโทนสีอ่อนแนว Art Gallery
+      backgroundColor: const Color(
+        0xFFF9F6F1,
+      ), // พื้นหลังโทนสีอ่อนแนว Art Gallery
       appBar: AppBar(
         title: const Text(
           "Favorites",
-          style: TextStyle(
-            color: Colors.brown,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: Colors.brown, fontWeight: FontWeight.bold),
         ),
         backgroundColor: const Color(0xFFF9F6F1),
         elevation: 0, // เอาเงาออก ให้เรียบหรู
         centerTitle: true,
       ),
-      body: ValueListenableBuilder<List<Art>>(  
+      body: ValueListenableBuilder<List<Art>>(
         // ฟังค่าจาก favoriteNotifier → รีเฟรช UI อัตโนมัติเมื่อเปลี่ยนค่า
         valueListenable: favoriteNotifier,
         builder: (context, favs, _) {
           if (favs.isEmpty) {
-            // ถ้าไม่มี favorite เลย → แสดงข้อความ 
+            // ถ้าไม่มี favorite เลย → แสดงข้อความ
             return const Center(
               child: Text(
                 "No favorites yet",
@@ -562,9 +615,9 @@ class FavoritesPage extends StatelessWidget {
             // ถ้ามี favorite → แสดงเป็น GridView
             padding: const EdgeInsets.all(16),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,       // 2 คอลัมน์
-              mainAxisSpacing: 20,     // ระยะแนวตั้งระหว่าง item
-              crossAxisSpacing: 20,    // ระยะแนวนอนระหว่าง item
+              crossAxisCount: 2, // 2 คอลัมน์
+              mainAxisSpacing: 20, // ระยะแนวตั้งระหว่าง item
+              crossAxisSpacing: 20, // ระยะแนวนอนระหว่าง item
               childAspectRatio: 3 / 4, // สัดส่วนแนวตั้งมากขึ้นให้เหมือนกรอบภาพ
             ),
             itemCount: favs.length,
@@ -589,10 +642,7 @@ class FavoritesPage extends StatelessWidget {
                     children: [
                       // ---------------- รูปผลงาน ----------------
                       Positioned.fill(
-                        child: Image.network(
-                          art.imagePath,
-                          fit: BoxFit.cover,
-                        ),
+                        child: Image.network(art.imagePath, fit: BoxFit.cover),
                       ),
 
                       // ---------------- ปุ่มหัวใจ ----------------
@@ -601,12 +651,15 @@ class FavoritesPage extends StatelessWidget {
                         right: 8,
                         child: GestureDetector(
                           onTap: () {
-                            favoriteNotifier.value =
-                                favs.where((a) => a != art).toList();
+                            favoriteNotifier.value = favs
+                                .where((a) => a != art)
+                                .toList();
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.7), // พื้นหลังโปร่ง
+                              color: Colors.white.withOpacity(
+                                0.7,
+                              ), // พื้นหลังโปร่ง
                               shape: BoxShape.circle,
                             ),
                             padding: const EdgeInsets.all(6),
@@ -626,7 +679,9 @@ class FavoritesPage extends StatelessWidget {
                         right: 0,
                         child: Container(
                           padding: const EdgeInsets.all(8),
-                          color: Colors.black.withOpacity(0.5), // พื้นหลังดำโปร่ง
+                          color: Colors.black.withOpacity(
+                            0.5,
+                          ), // พื้นหลังดำโปร่ง
                           child: Text(
                             art.name,
                             style: const TextStyle(
@@ -649,4 +704,3 @@ class FavoritesPage extends StatelessWidget {
     );
   }
 }
-
